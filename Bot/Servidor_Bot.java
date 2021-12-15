@@ -19,6 +19,7 @@ public class Servidor_Bot {
 		// TODO Auto-generated method stub
 		marco_Servidor m_s = new marco_Servidor();
 		m_s.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Solo es un comentario
 
 	}
 
