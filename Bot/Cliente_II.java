@@ -1,5 +1,4 @@
 package Bot;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +9,11 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 import javax.swing.*;
 
+
+import com.sun.speech.freetts.*;
 
 public class Cliente_II {
 
@@ -100,7 +102,7 @@ class lamina extends JPanel implements Runnable{
 		// TODO Auto-generated method stub
 		// Bucle que inicia el Bot con la información que llega del Servidor.
 		 Escucha_cliente uno = new Escucha_cliente(9995);
-		 Escucha_cliente dos = new Escucha_cliente(9993);
+		 //Escucha_cliente dos = new Escucha_cliente(9993);
 		
 		
 	}
@@ -174,7 +176,7 @@ public String getN_pedido() {
 
 
 
-private String opcion,usuario,n_pedido;
+private String opcion,usuario,n_pedido,mensaje;
 	
 }
 

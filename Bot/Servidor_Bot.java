@@ -7,12 +7,12 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
+import com.sun.speech.freetts.*;
 
 
 
 import javax.swing.*;
-
+import com.sun.speech.freetts.*;
 public class Servidor_Bot {
 
 	public static void main(String[] args) {
@@ -47,11 +47,12 @@ class lamina_Servidor extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
+			
 			//Inicia un socket para envíar la info incial al cliente.
-			Socket_Inicio inicio = new Socket_Inicio(IP, 9995);
+			Socket_Inicio inicio = new Socket_Inicio(IP, 9995,"");
 			
-			
-			recibe_paquete Recibe = new recibe_paquete(9993);
+			//Escucha el servidor al cliente
+			Escucha_servidor Recibe = new Escucha_servidor(9993);
 			
 			
 			
@@ -66,12 +67,29 @@ class lamina_Servidor extends JPanel implements Runnable{
 	 * Clases construidas  para optimzar el código que no tengamos tantas líneas.
 	 */
 	class Socket_Inicio{
-		public Socket_Inicio(String Ip, int puerto) {
+		public Socket_Inicio(String Ip, int puerto,String mensaje) {
 			try {
 				Socket socket_envio_Info = new Socket(Ip,puerto);
-				DataOutputStream flujoSalida1= new DataOutputStream (socket_envio_Info.getOutputStream());
-				flujoSalida1.writeUTF(Texto_Servidor.getText());
-				flujoSalida1.close();
+				if(mensaje.length() == 0) {
+					DataOutputStream flujoSalida1= new DataOutputStream (socket_envio_Info.getOutputStream());
+					flujoSalida1.writeUTF(Texto_Servidor.getText());
+					flujoSalida1.close();
+				}
+				
+				if(mensaje.length()> 0) {
+					DataOutputStream flujoSalida1= new DataOutputStream (socket_envio_Info.getOutputStream());
+					flujoSalida1.writeUTF(mensaje);
+					flujoSalida1.close();
+				}
+				
+				
+				
+				
+				
+
+				
+				
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -80,8 +98,8 @@ class lamina_Servidor extends JPanel implements Runnable{
 		}
 	}
 	
-	class recibe_paquete{
-		public recibe_paquete(int puerto) {
+	class Escucha_servidor{
+		public Escucha_servidor(int puerto) {
 			try {
 				//Inicia el Server que queda a la espera de la información
 				ServerSocket Servidor_Escucha = new ServerSocket(puerto);
@@ -98,10 +116,17 @@ class lamina_Servidor extends JPanel implements Runnable{
 					Loguear = datos_paquete.getUsuario();
 					n_Pedido = datos_paquete.getN_pedido();
 					Contenido_Servidor.append("La opcion marcada es: " + Opcion_Usu + "\n" + "El usaurio que se ha logueado es: " + Loguear + "\n" + "Numero de pedido: " + n_Pedido);
-					if(Opcion_Usu.equals("1")) {
-						Envio_Respuesta envio1 = new Envio_Respuesta(IP,9993);
-					}
+					
 					miSocket.close();
+					if(Opcion_Usu.equals("1")) {
+						String mensaje = "\n" + "\n" + "Bien. " + Loguear + " estamos estudiando tu caso";
+						String mensaje2 = "\n" + "Le hemos enviado un email con los detalles de la incidencia";
+						Socket_Inicio inicio2 = new Socket_Inicio(IP, 9995,mensaje);
+						Thread.sleep(2000);
+						Socket_Inicio inicio3 = new Socket_Inicio(IP, 9995,mensaje2);
+						
+						
+					}
 				}
 				
 			} catch (IOException e) {
@@ -110,13 +135,10 @@ class lamina_Servidor extends JPanel implements Runnable{
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-	}
-	class Envio_Respuesta{
-		public Envio_Respuesta(String Direccion, int puerto) {
-			
-			
 		}
 	}
 
