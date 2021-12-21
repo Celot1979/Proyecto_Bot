@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import javax.swing.*;
-
-
 import com.sun.speech.freetts.*;
 
 public class Cliente_II {
@@ -42,6 +39,8 @@ class lamina extends JPanel implements Runnable{
 		JPanel inferior= new JPanel();
 		// Declaración de los componentes
 		contenido = new JTextArea(20,30);
+		JScrollPane laminaScrollCliente = new JScrollPane(contenido);
+		contenido.setLineWrap(true);
 		
 		Texto = new JTextField(30);
 		
@@ -61,15 +60,31 @@ class lamina extends JPanel implements Runnable{
 				// TODO Auto-generated method stub
 				try {
 					// Se inicia  un socket para enviar la info que nos aporta el usuario
-					Socket mi_socket = new Socket("192.168.0.6" , 9993);
+					Socket mi_socket = new Socket("192.168.0.7" , 9993);
 					// Instacia el objeto que formará el objeto que creará el paquete 
 					Informacion_Cliente datos = new Informacion_Cliente();
 					datos.setOpcion(Texto.getText());
+					datos.setUsuario(JOptionPane.showInputDialog("Usuario: "));
+					datos.setN_pedido(JOptionPane.showInputDialog("Nº Pedido: "));
+					
 					// Su el usario escoge la opción 1º, se incializa esté condicional.
 					if(datos.getOpcion().equals("1")) {
-						datos.setUsuario(JOptionPane.showInputDialog("Usuario: "));
-						datos.setN_pedido(JOptionPane.showInputDialog("Nº Pedido: "));
-						//System.out.println(datos.getUsuario() + "\n" + datos.getN_pedido());
+						ObjectOutputStream flujosSalidaPaquete = new ObjectOutputStream(mi_socket.getOutputStream());
+						flujosSalidaPaquete.writeObject(datos);
+						Texto.setText("");
+						mi_socket.close();
+					}else if(datos.getOpcion().equals("2")) {
+						ObjectOutputStream flujosSalidaPaquete = new ObjectOutputStream(mi_socket.getOutputStream());
+						flujosSalidaPaquete.writeObject(datos);
+						Texto.setText("");
+						mi_socket.close();
+					}else if(datos.getOpcion().equals("3")) {
+						ObjectOutputStream flujosSalidaPaquete = new ObjectOutputStream(mi_socket.getOutputStream());
+						flujosSalidaPaquete.writeObject(datos);
+						Texto.setText("");
+						mi_socket.close();
+					}else if (datos.getOpcion().equals("4")) {
+						datos.setMensaje(JOptionPane.showInputDialog("Explicanos tú problema"));
 						ObjectOutputStream flujosSalidaPaquete = new ObjectOutputStream(mi_socket.getOutputStream());
 						flujosSalidaPaquete.writeObject(datos);
 						Texto.setText("");
@@ -83,8 +98,9 @@ class lamina extends JPanel implements Runnable{
 
 			}
 			
+			
 		});
-		centro.add(contenido);
+		centro.add(laminaScrollCliente);
 		centro.add(Texto);
 		inferior.add(Enviar);
 		superior.add(Icono);
@@ -101,8 +117,8 @@ class lamina extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		// Bucle que inicia el Bot con la información que llega del Servidor.
-		 Escucha_cliente uno = new Escucha_cliente(9995);
-		 //Escucha_cliente dos = new Escucha_cliente(9993);
+		 Escucha_cliente uno = new Escucha_cliente(9998);
+		 Escucha_cliente dos = new Escucha_cliente(9993);
 		
 		
 	}
@@ -171,6 +187,17 @@ public String getN_pedido() {
 
 	public void setN_pedido(String n_pedido) {
 		this.n_pedido = n_pedido;
+	}
+
+
+
+
+public String getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 
