@@ -9,7 +9,7 @@ El 1º es la cración de un chat, y el actual el de un bot. Dicho bot, tiene dos
 - Programación orientada a objetos (setters - getters).
 - Creación de interfaz visual (Swing).
 - Creación y uso de Threads (hilos).
-- Serialización de un paquete para ser enviado por el sockets.
+- Serialización de un paquete para ser enviado por los sockets.
 - Desempaquetamiento del paquete recibido al servidor.
 
 * El entorno siempre es de pruebas. Por tanto se ha utilizado siempre un hostLocal.
